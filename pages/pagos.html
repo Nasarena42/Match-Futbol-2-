@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagos - Match Futbol</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css"/>
+</head>
+<body>
+
+  <aside class="sidebar">
+   <div class="sidebar-logo">
+    <span class="logo-icon">⚽</span>
+      <div><div class="logo-title">MATCH</div><div class="logo-sub">FÚTBOL</div></div>
+      </div>
+
+      <nav class="sidebar-nav">
+      <a href="../index.html" class="nav-item"><span class="nav-icon">🏠</span><span>Inicio</span></a>
+      <a href="clientes.html"  class="nav-item"><span class="nav-icon">👥</span><span>Clientes</span></a>
+      <a href="reservas.html"  class="nav-item"><span class="nav-icon">📅</span><span>Reservas</span></a>
+      <a href="pagos.html"     class="nav-item active"><span class="nav-icon">💰</span><span>Pagos</span></a>
+      <a href="eventos.html"   class="nav-item"><span class="nav-icon">🎉</span><span>Eventos</span></a>
+    </nav>
+
+    <div class="sidebar-footer">Instituto Cervantes</div>
+  </aside>
+
+   
+  <main class="main-content">
+     <header class="top-bar">
+      <h1 class="page-title">Pagos</h1>
+      <div class="top-date" id="topDate"></div>
+    </header>
+    <div class="mensaje-ok" id="mensajeOk">✅ Cobro registrado con éxito.</div>
+
+    <h2>REGISTAR COBRO</h2><br>
+    <form id="formPago">
+
+      <label>Reserva *</label>
+      <select id="reservaSelect" onchange="cargarDatosReserva(); guardarEstadoFormulario()">
+        <option value="">-- Seleccioná una reserva --</option>
+      </select>
+
+      <label>Precio total ($)</label>
+      <input type="number" id="precioTotal" readonly style="background:#eee">
+
+      <label>Seña ya pagada ($)</label>
+      <input type="number" id="senaYaPagada" readonly style="background:#eee">
+
+      <label>Saldo restante ($)</label>
+      <input type="number" id="saldoRestante" readonly style="background:#eee">
+
+      <label>Forma de pago *</label>
+      <select id="formaPago" onchange="guardarEstadoFormulario()">
+        <option value="">-- Seleccioná forma de pago --</option>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Tarjeta"> Tarjeta</option>
+      </select>
+
+      <label>Monto a cobrar ($) *</label>
+      <input type="number" id="montoCobrar" placeholder="Ej: 35000" min="0" oninput="guardarEstadoFormulario()">
+
+      <button type="button" onclick="registrarCobro()">Registrar cobro</button>
+
+    </form>
+
+    <h2>Lista de cobros</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Cancha</th>
+          <th>Fecha reserva</th>
+          <th>Forma de pago</th>
+          <th>Monto cobrado</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="tablaPagos">
+        <tr><td colspan="7">No hay cobros registrados.</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+
+    // Cargar reservas activas en el select
+    function cargarReservas() {
+      var reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      var select = document.getElementById("reservaSelect");
+      var valorActual = select.value;
+      select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
+
+      for (var i = 0; i < reservas.length; i++) {
+        var r = reservas[i];
+        if (r.estado != "cancelada") {
+          var opcion = document.createElement("option");
+          opcion.value = i;
+          opcion.textContent = r.cliente + " - Cancha " + r.cancha + " - " + formatearFecha(r.fecha) + " " + r.hora;
+          select.appendChild(opcion);
+        }
+      }
+
+      // Restaurar valor anterior si existia
+      if (valorActual !== "") {
+        select.value = valorActual;
+      }
+    }
+
+    // Cargar datos de la reserva seleccionada
+    function cargarDatosReserva() {
+      var indice = document.getElementById("reservaSelect").value;
+      if (indice === "") {
+        document.getElementById("precioTotal").value   = "";
+        document.getElementById("senaYaPagada").value  = "";
+        document.getElementById("saldoRestante").value = "";
+        document.getElementById("montoCobrar").value   = "";
+        return;
+      }
+
+      var reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      var r = reservas[indice];
+
+      var precio = Number(r.precio || 0);
+      var sena   = Number(r.sena   || 0);
+      var saldo  = precio - sena;
+
+      document.getElementById("precioTotal").value   = precio;
+      document.getElementById("senaYaPagada").value  = sena;
+      document.getElementById("saldoRestante").value = saldo > 0 ? saldo : 0;
+      document.getElementById("montoCobrar").value   = saldo > 0 ? saldo : 0;
+    }
+
+    // Guardar estado del formulario
+    function guardarEstadoFormulario() {
+      var estado = {
+        reservaSelect: document.getElementById("reservaSelect").value,
+        formaPago:     document.getElementById("formaPago").value,
+        montoCobrar:   document.getElementById("montoCobrar").value
+      };
+      localStorage.setItem("formPagoTemp", JSON.stringify(estado));
+    }
+
+    // Registrar cobro
+    function registrarCobro() {
+      var indiceReserva = document.getElementById("reservaSelect").value;
+      var formaPago     = document.getElementById("formaPago").value;
+      var montoCobrar   = document.getElementById("montoCobrar").value;
+
+      if (indiceReserva === "" || formaPago === "" || montoCobrar === "") {
+        alert("Todos los campos son obligatorios.");
+        return;
+      }
+
+      var reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      var r = reservas[indiceReserva];
+
+      var pagos = JSON.parse(localStorage.getItem("pagos")) || [];
+      pagos.push({
+        cliente:   r.cliente,
+        cancha:    r.cancha,
+        fecha:     r.fecha,
+        hora:      r.hora,
+        formaPago: formaPago,
+        monto:     montoCobrar,
+        estado:    "cobrado",
+        fechaPago: hoy()
+      });
+
+      localStorage.setItem("pagos", JSON.stringify(pagos));
+
+      // Actualizar estado de la reserva a pagada
+      reservas[indiceReserva].estadoPago = "Pagada completa";
+      localStorage.setItem("reservas", JSON.stringify(reservas));
+
+      // Limpiar formulario y temp
+      document.getElementById("reservaSelect").value = "";
+      document.getElementById("precioTotal").value   = "";
+      document.getElementById("senaYaPagada").value  = "";
+      document.getElementById("saldoRestante").value = "";
+      document.getElementById("formaPago").value     = "";
+      document.getElementById("montoCobrar").value   = "";
+      localStorage.removeItem("formPagoTemp");
+
+      var msg = document.getElementById("mensajeOk");
+      msg.style.display = "block";
+      setTimeout(function() { msg.style.display = "none"; }, 2500);
+
+      mostrarPagos();
+      cargarReservas();
+    }
+
+    // Mostrar cobros en la tabla
+    function mostrarPagos() {
+      var pagos = JSON.parse(localStorage.getItem("pagos")) || [];
+      var tbody = document.getElementById("tablaPagos");
+
+      if (pagos.length == 0) {
+        tbody.innerHTML = "<tr><td colspan='7'>No hay cobros registrados.</td></tr>";
+        return;
+      }
+
+      var html = "";
+      for (var i = 0; i < pagos.length; i++) {
+        var p = pagos[i];
+        html += "<tr>";
+        html += "<td>" + (i + 1) + "</td>";
+        html += "<td>" + p.cliente + "</td>";
+        html += "<td>Cancha " + p.cancha + "</td>";
+        html += "<td>" + formatearFecha(p.fecha) + "</td>";
+        html += "<td>" + p.formaPago + "</td>";
+        html += "<td>$" + Number(p.monto).toLocaleString("es-AR") + "</td>";
+        html += "<td style='color:green;font-weight:600'>" + p.estado + "</td>";
+        html += "</tr>";
+      }
+      tbody.innerHTML = html;
+    }
+
+    // Formatear fecha
+    function formatearFecha(fecha) {
+      if (!fecha) return "—";
+      var partes = fecha.split("-");
+      return partes[2] + "/" + partes[1] + "/" + partes[0];
+    }
+
+    // Funcion hoy()
+    function hoy() {
+      return new Date().toISOString().split("T")[0];
+    }
+
+    // Init
+    cargarReservas();
+    mostrarPagos();
+
+    // Restaurar estado del formulario si existe
+    var temp = JSON.parse(localStorage.getItem("formPagoTemp"));
+    if (temp) {
+      document.getElementById("reservaSelect").value = temp.reservaSelect || "";
+      document.getElementById("formaPago").value     = temp.formaPago     || "";
+      document.getElementById("montoCobrar").value   = temp.montoCobrar   || "";
+      cargarDatosReserva();
+    }
+
+  </script>
+
+</body>
+</html>

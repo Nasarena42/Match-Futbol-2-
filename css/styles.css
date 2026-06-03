@@ -1,0 +1,473 @@
+
+
+/* ===== VARIABLES GLOBALES ===== */
+:root {
+  --verde:        #1a7a2e;
+  --verde-claro:  #25a83e;
+  --verde-neon:   #4ddc6e;
+  --negro:        #0d0d0d;
+  --gris-oscuro:  #1a1a1a;
+  --gris-medio:   #2a2a2a;
+  --gris-borde:   #333;
+  --blanco:       #f5f5f5;
+  --texto-suave:  #888;
+  --azul:         #1a5fa8;
+  --naranja:      #c45c00;
+  --rojo:         #a81a1a;
+  --font-titulo:  'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --sidebar-w:    220px;
+  --radius:       10px;
+}
+
+/* ===== RESET ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ===== BODY ===== */
+body {
+  font-family: var(--font-body);
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* =====================================================
+   SIDEBAR — menú lateral fijo
+   ===================================================== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--gris-oscuro);
+  border-right: 1px solid var(--gris-borde);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+/* Logo: ícono + nombre + subtítulo */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.logo-icon  { font-size: 2rem; }
+
+.logo-title {
+  font-family: var(--font-titulo);
+  font-size: 1.6rem;
+  color: var(--verde-neon);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.logo-sub {
+  font-size: 0.65rem;
+  color: var(--texto-suave);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* Lista de ítems de navegación */
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Ítem de navegación */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: var(--texto-suave);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-item:hover {
+  color: var(--blanco);
+  background: var(--gris-medio);
+  border-left-color: var(--verde-neon);
+}
+
+.nav-item.active {
+  color: var(--verde-neon);
+  background: rgba(77, 220, 110, 0.08);
+  border-left-color: var(--verde-neon);
+}
+
+.nav-icon { font-size: 1.1rem; }
+
+/* Pie del sidebar */
+.sidebar-footer {
+  padding: 16px 20px;
+  font-size: 0.7rem;
+  color: var(--texto-suave);
+  border-top: 1px solid var(--gris-borde);
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   CONTENIDO PRINCIPAL
+   Clase única: .main-content (reemplaza .contenido)
+   ===================================================== */
+.main-content {
+  margin-left: var(--sidebar-w);  /* no solapar con el sidebar */
+  flex: 1;
+  padding: 0 48px 40px;
+  max-width: 1100px;              /* centrado izquierda, no se estira */
+}
+
+/* ===== BARRA SUPERIOR: título + fecha ===== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 24px;
+  border-bottom: 1px solid var(--gris-borde);
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: var(--font-titulo);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: var(--blanco);
+}
+
+.top-date {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* =====================================================
+   TARJETAS DEL DASHBOARD
+   ===================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.dash-card {
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.dash-card:hover { transform: translateY(-3px); }
+
+.dash-card.green  { border-top: 3px solid var(--verde-neon); }
+.dash-card.blue   { border-top: 3px solid #5ba3f5; }
+.dash-card.orange { border-top: 3px solid #f59e42; }
+.dash-card.red    { border-top: 3px solid #f55b5b; }
+
+.dash-card-icon  { font-size: 2rem; }
+.dash-card-num   { font-family: var(--font-titulo); font-size: 2rem; line-height: 1; }
+.dash-card-label { font-size: 0.75rem; color: var(--texto-suave); margin-top: 4px; }
+
+/* =====================================================
+   SECCIÓN GENÉRICA
+   ===================================================== */
+.section-box {
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-family: var(--font-titulo);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  color: var(--blanco);
+}
+
+.empty-msg {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* =====================================================
+   FORMULARIOS
+   ===================================================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group.full { grid-column: 1 / -1; }
+
+label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input, select, textarea {
+  background: var(--gris-medio);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  color: var(--blanco);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--verde-neon);
+}
+
+select option { background: var(--gris-medio); }
+
+/* =====================================================
+   BOTONES
+   ===================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary       { background: var(--verde-claro); color: #fff; }
+.btn-primary:hover { background: var(--verde); }
+
+.btn-danger        { background: transparent; border: 1px solid #f55b5b; color: #f55b5b; }
+.btn-danger:hover  { background: rgba(245, 91, 91, 0.1); }
+
+.btn-outline       { background: transparent; border: 1px solid var(--gris-borde); color: var(--blanco); }
+.btn-outline:hover { border-color: var(--verde-neon); color: var(--verde-neon); }
+
+/* =====================================================
+   TABLA
+   ===================================================== */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.tabla th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--texto-suave);
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.tabla td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+.tabla tr:hover td { background: rgba(255,255,255,0.03); }
+
+/* =====================================================
+   BUSCADOR
+   ===================================================== */
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-bar input { flex: 1; }
+
+/* =====================================================
+   BADGES
+   ===================================================== */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.badge-green  { background: rgba(77,220,110,0.15); color: var(--verde-neon); }
+.badge-red    { background: rgba(245,91,91,0.15);  color: #f55b5b; }
+.badge-orange { background: rgba(245,158,66,0.15); color: #f59e42; }
+.badge-blue   { background: rgba(91,163,245,0.15); color: #5ba3f5; }
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radius);
+  padding: 28px;
+  width: 500px;
+  max-width: 95vw;
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-family: var(--font-titulo);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--texto-suave);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--blanco); }
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* =====================================================
+   LISTA DE RESERVAS DEL DÍA
+   ===================================================== */
+.reservas-list { display: flex; flex-direction: column; gap: 10px; }
+
+.reserva-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--gris-medio);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+}
+
+.reserva-hora {
+  font-family: var(--font-titulo);
+  font-size: 1.2rem;
+  color: var(--verde-neon);
+  min-width: 60px;
+}
+
+.reserva-cancha { color: var(--texto-suave); font-size: 0.78rem; }
+
+/* =====================================================
+   TOAST — notificación flotante
+   ===================================================== */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--verde-claro);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 999;
+}
+#toast.show { opacity: 1; }
+
+/* =====================================================
+   TABS — pestañas internas
+   ===================================================== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--texto-suave);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: var(--verde-neon);
+  border-bottom-color: var(--verde-neon);
+}
+
+.tab-panel        { display: none; }
+.tab-panel.active { display: block; }

@@ -1,0 +1,210 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  background-color: #f0f0f0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background-color: #1a7a2e;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.sidebar a:hover {
+  background-color: rgba(255,255,255,0.1);
+  padding-left: 8px;
+}
+
+/* Contenido principal */
+.contenido {
+  flex: 1;
+  padding: 30px;
+}
+
+.contenido h1 {
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.contenido h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Tarjetas del panel */
+.tarjetas {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.tarjeta {
+  padding: 20px 30px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  min-width: 150px;
+  text-align: center;
+}
+
+.tarjeta:hover {
+  opacity: 0.85;
+}
+
+.tarjeta.verde  { background-color: #1a7a2e; }
+.tarjeta.azul   { background-color: #1a5fa8; }
+
+.numero {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Formularios */
+form {
+  background: rgb(200, 201, 201);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin-bottom: 50px;
+  box-shadow: 0 2px 10px rgba(179, 255, 0, 0.1);
+}
+
+form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #e3edd3;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+form button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background-color: #1a7a2e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #155c23;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+th {
+  background-color: #1a7a2e;
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: #626262;
+}
+
+/* Botones de acción en tablas */
+.btn-editar {
+  background-color: #1a5fa8;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.btn-eliminar {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-filtro {
+  background-color: #3d78f8;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-editar:hover   { background-color: #154f8c; }
+.btn-eliminar:hover { background-color: #922b21; }
+
+/* Buscador */
+.buscador {
+  margin-bottom: 16px;
+}
+
+.buscador input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  width: 300px;
+}
+
+/* Mensajes */
+.mensaje-ok {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: none;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Match Futbol</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+
+
+
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚽</span>
+       <div><div class="logo-title">MATCH</div><div class="logo-sub">FÚTBOL</div></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="index.html" class="nav-item active"><span class="nav-icon">🏠</span><span>Inicio</span></a>
+      <a href="pages/clientes.html" class="nav-item"><span class="nav-icon">👥</span><span>Clientes</span></a>
+      <a href="pages/reservas.html" class="nav-item"><span class="nav-icon">📅</span><span>Reservas</span></a>
+      <a href="pages/pagos.html" class="nav-item"><span class="nav-icon">💰</span><span>Pagos</span></a>
+      <a href="pages/eventos.html" class="nav-item"><span class="nav-icon">🎉</span><span>Eventos</span></a>
+    </nav>
+    <div class="sidebar-footer">Instituto Cervantes</div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <h1 class="page-title">Panel Principal confirmar si lo ven</h1>
+      <div class="top-date" id="topDate"></div>
+    </header>
+
+    <section class="section-box" style="text-align:center;padding:60px">
+
+      <div class="tarjetas">
+
+        <div class="tarjeta verde" onclick="location.href='pages/clientes.html'">
+          <p class="numero" id="totalClientes">0</p>
+          <p>Clientes registrados</p>
+        </div>
+
+        <div class="tarjeta azul" onclick="location.href='pages/reservas.html'">
+          <p class="numero" id="totalReservas">0</p>
+          <p>Reservas activas</p>
+        </div>
+
+        <div class="tarjeta roja" onclick="location.href='pages/pagos.html'">
+          <p class="numero" id="totalPagos">0</p>
+          <p>Pagos pendientes</p>
+        </div>
+
+      </div>
+    </section>
+
+    <h2>RESERVAS DE HOY</h2>
+    <div id="reservasHoy">
+      <p>No hay reservas para hoy.</p>
+    </div>
+
+
+  </main>
+
+  <script>
+    // Mostrar total de clientes
+    var clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+    document.getElementById("totalClientes").textContent = clientes.length;
+
+    // Mostrar total de reservas activas
+    var reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+    var activas = [];
+    for (var i = 0; i < reservas.length; i++) {
+      if (reservas[i].estado != "cancelada") {
+        activas.push(reservas[i]);
+      }
+    }
+    document.getElementById("totalReservas").textContent = activas.length;
+
+    // Mostrar reservas de hoy
+    var hoy = new Date().toISOString().split("T")[0];
+    var reservasHoy = [];
+    for (var i = 0; i < reservas.length; i++) {
+      if (reservas[i].fecha == hoy && reservas[i].estado != "cancelada") {
+        reservasHoy.push(reservas[i]);
+      }
+    }
+
+    var divHoy = document.getElementById("reservasHoy");
+    if (reservasHoy.length == 0) {
+      divHoy.innerHTML = "<p>No hay reservas para hoy.</p>";
+    } else {
+      var html = "<table border='1' cellpadding='8' cellspacing='0'>";
+      html += "<tr><th>Hora</th><th>Cliente</th><th>Cancha</th><th>Estado pago</th></tr>";
+      for (var i = 0; i < reservasHoy.length; i++) {
+        var r = reservasHoy[i];
+        html += "<tr>";
+        html += "<td>" + r.hora + "</td>";
+        html += "<td>" + r.cliente + "</td>";
+        html += "<td>Cancha " + r.cancha + "</td>";
+        html += "<td>" + r.estadoPago + "</td>";
+        html += "</tr>";
+      }
+      html += "</table>";
+      divHoy.innerHTML = html;
+    }
+  </script>
+
+</body>
+
+</html>
