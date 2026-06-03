@@ -88,6 +88,9 @@
   </div>
 
   <script>
+    var fecha = new Date();
+var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR', opciones);
 
     // Cargar reservas activas en el select
     function cargarReservas() {

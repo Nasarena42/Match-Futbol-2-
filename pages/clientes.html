@@ -85,6 +85,9 @@
 
   </main>
   <script>
+    var fecha = new Date();
+var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR', opciones);
 
     // Variable para saber si estamos editando (guarda el indice del cliente)
     var indiceEditando = -1;

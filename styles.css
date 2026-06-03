@@ -73,6 +73,8 @@ body {
 
 .tarjeta.verde  { background-color: #1a7a2e; }
 .tarjeta.azul   { background-color: #1a5fa8; }
+.tarjeta.roja   { background-color: #c0392b; }
+.tarjeta.amarilla { background-color: #f39c12; }
 
 .numero {
   font-size: 2.5rem;

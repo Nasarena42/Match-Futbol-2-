@@ -152,6 +152,9 @@
 
 
   <script>
+    var fecha = new Date();
+var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR', opciones);
 
     function cargarClientes() {
       var clientes = JSON.parse(localStorage.getItem("clientes")) || [];

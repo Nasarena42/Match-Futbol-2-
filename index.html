@@ -37,8 +37,8 @@
 
   <main class="main-content">
     <header class="top-bar">
-      <h1 class="page-title">Panel Principal confirmar si lo ven</h1>
-      <div class="top-date" id="topDate"></div>
+      <h1 class="page-title">Panel Principal</h1>
+          <div class="top-date" id="topDate"></div>
     </header>
 
     <section class="section-box" style="text-align:center;padding:60px">
@@ -60,6 +60,11 @@
           <p>Pagos pendientes</p>
         </div>
 
+        <div class="tarjeta amarilla" onclick="location.href='pages/eventos.html'">
+          <p class="numero" id="totalEventos">0</p>
+          <p>Eventos programados</p>
+        </div>
+
       </div>
     </section>
 
@@ -72,6 +77,9 @@
   </main>
 
   <script>
+    var fecha = new Date();
+var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR', opciones);
     // Mostrar total de clientes
     var clientes = JSON.parse(localStorage.getItem("clientes")) || [];
     document.getElementById("totalClientes").textContent = clientes.length;
