@@ -124,6 +124,7 @@
         <option value="23:00">23:00</option>
       </select>
       <button class='btn-filtro' type="button" onclick="limpiarFiltros()">Limpiar filtros</button>
+      <button class="btn-eliminar" type="button" onclick="borrarCanceladas()">🗑 Eliminar canceladas</button>
     </div>
 
     <table>
@@ -341,10 +342,21 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
       var partes = fecha.split("-");
       return partes[2] + "/" + partes[1] + "/" + partes[0];
     }
+    function borrarCanceladas() {
+  var confirmar = confirm("¿Eliminar todas las reservas canceladas?");
+  if (!confirmar) return;
+  var reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  var activas = reservas.filter(function(r) {
+    return r.estado != "cancelada";
+  });
+  localStorage.setItem("reservas", JSON.stringify(activas));
+  mostrarReservas();
+}
 
     calcularPrecio();
     cargarClientes();
     mostrarReservas();
+
 
   </script>
 

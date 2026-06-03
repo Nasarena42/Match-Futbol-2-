@@ -42,15 +42,16 @@
     <!-- Formulario para agregar cliente -->
     <h2>AGREGAR CLIENTES</h2> <br>
     <form id="formCliente">
+      
+      <label>DNI *</label>
+      <input type="text" id="dni" placeholder="Ej: 42XXXXXX">
 
       <label>Nombre completo *</label>
-      <input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+      <input type="text" id="nombre" placeholder="Ej: Pérez">
 
-      <label>Teléfono *</label>
-      <input type="text" id="telefono" placeholder="Ej: 351-1234567">
 
-      <label>Mail</label>
-      <input type="email" id="mail" placeholder="correo@ejemplo.com">
+      <label>Teléfono</label>
+      <input type="text" id="telefono" placeholder="351-XXXXXXX">
 
       <label>Observaciones</label>
       <textarea id="observaciones" rows="3" placeholder="Notas sobre el cliente..."></textarea>
@@ -62,7 +63,7 @@
     <!-- Buscador -->
     <h2>LISTA DE CLIENTES</h2>
     <div class="buscador">
-      <input type="text" id="buscador" placeholder="🔍 Buscar por nombre o teléfono..." oninput="buscarCliente()">
+      <input type="text" id="buscador" placeholder="🔍 Buscar por nombre o tléfono..." oninput="buscarCliente()">
     </div>
 
     <!-- Tabla de clientes -->
@@ -71,8 +72,8 @@
         <tr>
           <th>#</th>
           <th>Nombre</th>
+          <th>DNI</th>
           <th>Teléfono</th>
-          <th>Mail</th>
           <th>Observaciones</th>
           <th>Acciones</th>
         </tr>
@@ -98,8 +99,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
     // Guarda un cliente nuevo o edita uno existente
     function guardarCliente() {
       var nombre        = document.getElementById("nombre").value.trim();
-      var telefono      = document.getElementById("telefono").value.trim();
-      var mail          = document.getElementById("mail").value.trim();
+      var dni      = document.getElementById("dni").value.trim();
+      var telefono         = document.getElementById("telefono").value.trim();
       var observaciones = document.getElementById("observaciones").value.trim();
 
       // Validacion basica
@@ -115,8 +116,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
         // Es un cliente nuevo, lo agrego al array
         var clienteNuevo = {
           nombre:        nombre,
-          telefono:      telefono,
-          mail:          mail,
+          dni:            dni,
+          telefono:          telefono,
           observaciones: observaciones
         };
         clientes.push(clienteNuevo);
@@ -124,8 +125,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
       } else {
         // Estoy editando, actualizo el cliente existente
         clientes[indiceEditando].nombre        = nombre;
+        clientes[indiceEditando].dni      = dni;
         clientes[indiceEditando].telefono      = telefono;
-        clientes[indiceEditando].mail          = mail;
         clientes[indiceEditando].observaciones = observaciones;
 
         // Resetear el indice de edicion
@@ -138,8 +139,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
 
       // Limpiar el formulario
       document.getElementById("nombre").value        = "";
-      document.getElementById("telefono").value      = "";
-      document.getElementById("mail").value          = "";
+      document.getElementById("dni").value      = "";
+      document.getElementById("telefono").value          = "";
       document.getElementById("observaciones").value = "";
 
       // Mostrar mensaje de exito
@@ -167,8 +168,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
         html += "<tr>";
         html += "<td>" + (i + 1) + "</td>";
         html += "<td>" + c.nombre + "</td>";
+        html += "<td>" + c.dni + "</td>";
         html += "<td>" + c.telefono + "</td>";
-        html += "<td>" + (c.mail || "—") + "</td>";
         html += "<td>" + (c.observaciones || "—") + "</td>";
         html += "<td>";
         html += "<button class='btn-editar' onclick='editarCliente(" + i + ")'>Editar</button>";
@@ -186,8 +187,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
       var c = clientes[indice];
 
       document.getElementById("nombre").value        = c.nombre;
-      document.getElementById("telefono").value      = c.telefono;
-      document.getElementById("mail").value          = c.mail || "";
+      document.getElementById("dni").value      = c.dni;
+      document.getElementById("telefono").value          = c.telefono  || "";
       document.getElementById("observaciones").value = c.observaciones || "";
 
       // Guardar indice para saber cual editar al hacer click en guardar
@@ -236,8 +237,8 @@ document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR
         html += "<tr>";
         html += "<td>" + (idx + 1) + "</td>";
         html += "<td>" + c.nombre + "</td>";
+        html += "<td>" + c.dni + "</td>";
         html += "<td>" + c.telefono + "</td>";
-        html += "<td>" + (c.mail || "—") + "</td>";
         html += "<td>" + (c.observaciones || "—") + "</td>";
         html += "<td>";
         html += "<button class='btn-editar' onclick='editarCliente(" + idx + ")'>Editar</button>";
