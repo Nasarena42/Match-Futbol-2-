@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Fútbol - Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-body">
+
+  <div class="login-card">
+    <div class="login-logo-wrap">
+      <div class="logo-ball">⚽</div>
+      <div class="logo-text-wrap">
+        <div class="logo-top">MATCH</div>
+        <div class="logo-bot">FÚTBOL</div>
+      </div>
+    </div>
+
+    <p class="login-title">Ingresá con tu cuenta</p>
+
+    <div id="loginError" class="error-msg"></div>
+
+    <div class="field-group">
+      <label class="field-label">USUARIO</label>
+      <div class="field-input-wrap">
+        <input type="text" id="usuario" placeholder="Ingresá tu usuario" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">CONTRASEÑA</label>
+      <div class="field-input-wrap">
+        <input type="password" id="password" placeholder="••••••••" />
+      </div>
+    </div>
+
+    <button class="btn-login" onclick="iniciarSesion()">Ingresar</button>
+  </div>
+
+  <script>
+    if (localStorage.getItem("logueado")) {
+      window.location.href = "index.html";
+    }
+
+    function iniciarSesion() {
+      var usuario = document.getElementById("usuario").value;
+      var password = document.getElementById("password").value;
+
+      if (usuario === "admin" && password === "1234") {
+        localStorage.setItem("logueado", "true");
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("loginError").textContent = "Usuario o contraseña incorrectos";
+        document.getElementById("loginError").style.display = "block";
+      }
+    }
+
+    document.getElementById("password").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") iniciarSesion();
+    });
+  </script>
+
+</body>
+</html>

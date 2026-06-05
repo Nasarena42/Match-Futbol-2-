@@ -9,8 +9,8 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
@@ -22,22 +22,38 @@
 
     <div class="sidebar-logo">
       <span class="logo-icon">⚽</span>
-       <div><div class="logo-title">MATCH</div><div class="logo-sub">FÚTBOL</div></div>
+      <div>
+        <div class="logo-title">MATCH</div>
+        <div class="logo-sub">FÚTBOL</div>
+      </div>
     </div>
 
+    
     <nav class="sidebar-nav">
-      <a href="index.html" class="nav-item active"><span class="nav-icon">🏠</span><span>Inicio</span></a>
-      <a href="pages/clientes.html" class="nav-item"><span class="nav-icon">👥</span><span>Clientes</span></a>
-      <a href="pages/reservas.html" class="nav-item"><span class="nav-icon">📅</span><span>Reservas</span></a>
-      <a href="pages/pagos.html" class="nav-item"><span class="nav-icon">💰</span><span>Pagos</span></a>
-      <a href="pages/eventos.html" class="nav-item"><span class="nav-icon">🎉</span><span>Eventos</span></a>
-    </nav>
+    
+       <a href="../index.html" class="nav-item active">
+    <i class="fa-solid fa-house"></i><span><br>Inicio</span>
+  </a>
+  <a href="pages/clientes.html" class="nav-item">
+    <i class="fa-solid fa-users"></i><span><br>Clientes</span>
+  </a>
+  <a href="pages/reservas.html" class="nav-item">
+    <i class="fa-solid fa-calendar-days"></i><span><br>Reservas</span>
+  </a>
+  <a href="pages/pagos.html" class="nav-item">
+    <i class="fa-solid fa-money-bill"></i><span><br>Pagos</span>
+  </a>
+  <a href="pages/eventos.html" class="nav-item">
+    <i class="fa-solid fa-star"></i><span><br>Eventos</span>
+  </a>
+  </nav>
+
     <div class="sidebar-footer">Instituto Cervantes</div>
   </aside>
 
   <main class="main-content">
     <header class="top-bar">
-      <h1 class="page-title">Panel Principal confirmar si lo ven</h1>
+      <h1 class="page-title">Panel Principal</h1>
       <div class="top-date" id="topDate"></div>
     </header>
 
@@ -60,6 +76,11 @@
           <p>Pagos pendientes</p>
         </div>
 
+        <div class="tarjeta amarilla" onclick="location.href='pages/eventos.html'">
+          <p class="numero" id="totalEventos">0</p>
+          <p>Eventos de hoy</p>
+        </div>
+
       </div>
     </section>
 
@@ -72,6 +93,15 @@
   </main>
 
   <script>
+    // Verificar si está logueado
+
+if (!localStorage.getItem("logueado")) {
+  window.location.href = "loggin.html"; // ajustá la ruta según la página
+}
+
+    var fecha = new Date();
+    var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("topDate").textContent = fecha.toLocaleDateString('es-AR', opciones);
     // Mostrar total de clientes
     var clientes = JSON.parse(localStorage.getItem("clientes")) || [];
     document.getElementById("totalClientes").textContent = clientes.length;

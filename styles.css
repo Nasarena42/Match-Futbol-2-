@@ -1,9 +1,119 @@
 /* Estilos generales */
-body {
+
+
+/*Loggin*/
+  
+
+.login-body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  background: #0a0a0a;
   display: flex;
-  background-color: #f0f0f0;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.login-card {
+  background: #141414;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.logo-ball {
+  width: 44px;
+  height: 44px;
+  background: #1a7a2e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.logo-top {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.logo-bot {
+  font-size: 11px;
+  color: #1a7a2e;
+  letter-spacing: 3px;
+}
+
+.login-title {
+  font-size: 15px;
+  color: #888;
+  margin-bottom: 1.5rem;
+}
+
+.field-group {
+  margin-bottom: 1rem;
+}
+
+.field-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+.field-input-wrap input {
+  width: 100%;
+  padding: 11px 12px;
+  background: #1e1e1e;
+  border: 0.5px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.field-input-wrap input:focus {
+  outline: none;
+  border-color: #1a7a2e;
+}
+
+.error-msg {
+  background: #2a0f0f;
+  border: 0.5px solid #5c1f1f;
+  color: #f09595;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #1a7a2e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.btn-login:hover {
+  background: #155c23;
 }
 
 /* Sidebar */
@@ -30,7 +140,7 @@ body {
 }
 
 .sidebar a:hover {
-  background-color: rgba(255,255,255,0.1);
+  background-color: lab(100% 0.01 -0.01 / 0.1);
   padding-left: 8px;
 }
 
@@ -73,6 +183,8 @@ body {
 
 .tarjeta.verde  { background-color: #1a7a2e; }
 .tarjeta.azul   { background-color: #1a5fa8; }
+.tarjeta.roja   { background-color: #c0392b; }
+.tarjeta.amarilla { background-color: #f39c12; }
 
 .numero {
   font-size: 2.5rem;
