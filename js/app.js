@@ -1,6 +1,7 @@
 // ===== app.js — utilidades globales =====
 
 // Toast notification
+
 function showToast(msg, color = '#25a83e') {
   let t = document.getElementById('toast');
   if (!t) {
@@ -67,3 +68,165 @@ function hoy() {
   const now = new Date();
   el.textContent = now.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function cargarReservasEnPagos() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const select = document.getElementById("reservaSelect");
+  select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
+
+  reservas.forEach((r, i) => {
+    const opcion = document.createElement("option");
+    opcion.value = i; // índice de la reserva
+    opcion.textContent = r.cliente + " - Cancha " + r.cancha + " - " + r.fecha + " " + r.hora;
+    select.appendChild(opcion);
+  });
+}
+
+function cargarDatosReserva() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const indice = document.getElementById("reservaSelect").value;
+  if (indice === "") return;
+
+  const r = reservas[indice];
+  document.getElementById("precioTotal").value   = r.precio;
+  document.getElementById("senaYaPagada").value  = r.sena;
+  document.getElementById("saldoRestante").value = (r.precio - r.sena).toFixed(2);
+  document.getElementById("montoCobrar").value   = ""; // se completa al elegir tipo de pago
+}
+
+function seleccionarTipoPago() {
+  const tipo   = document.getElementById("tipoPago").value;
+  const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
+  const sena   = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+
+  if (tipo === "sena") {
+    document.getElementById("montoCobrar").value = sena;
+    document.getElementById("saldoRestante").value = (precio - sena).toFixed(2);
+  } else if (tipo === "total") {
+    document.getElementById("montoCobrar").value = precio;
+    document.getElementById("saldoRestante").value = 0;
+  } else {
+    document.getElementById("montoCobrar").value = "";
+  }
+}
+
+let pagos = []; // historial de pagos
+
+function registrarCobro() {
+  const reserva = document.getElementById("reservaSelect").value;
+  const monto = parseFloat(document.getElementById("montoCobrar").value) || 0;
+  const precioTotal = parseFloat(document.getElementById("precioTotal").value) || 0;
+
+  if (!reserva || !monto) {
+    alert("Completa todos los campos obligatorios.");
+    return;
+  }
+
+  // Guardamos el pago
+  pagos.push({reserva, monto});
+
+  // Calculamos el total abonado para esa reserva
+  const totalAbonado = pagos
+    .filter(p => p.reserva === reserva)
+    .reduce((sum, p) => sum + p.monto, 0);
+
+  // Calculamos saldo
+  let saldo = precioTotal - totalAbonado;
+
+  // Mostramos automáticamente el resultado
+  if (saldo <= 0) {
+    document.getElementById("saldoRestante").value = "Pagado.-";
+  } else {
+    document.getElementById("saldoRestante").value = saldo;
+  }
+
+
+  if (!reserva || !tipo || !monto || !forma) {
+    alert("Completa todos los campos obligatorios.");
+    return;
+  }
+
+  // Guardamos el pago en el historial
+  pagos.push({reserva, tipo, monto, forma});
+
+  // Calculamos el total abonado hasta ahora
+  const totalAbonado = pagos
+    .filter(p => p.reserva === reserva)
+    .reduce((sum, p) => sum + p.monto, 0);
+
+  let saldo = precioTotal - totalAbonado;
+
+  // Mostramos saldo o "Pagado.-"
+  if (saldo <= 0) {
+    document.getElementById("saldoRestante").value = "Pagado.-";
+  } else {
+    document.getElementById("saldoRestante").value = saldo;
+  }
+
+  console.log("Cobro registrado:", {reserva, tipo, monto, forma, saldo});
+}
+// funcion calcular saldo restante
+
+function calcularSaldoRestante() {
+  const precioTotal = parseFloat(document.getElementById("precioTotal").value) || 0;
+  const senaYaPagada = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+  const montoCobrar = parseFloat(document.getElementById("montoCobrar").value) || 0;
+
+  let saldo = precioTotal - senaYaPagada - montoCobrar;
+
+  if (saldo <= 0) {
+    document.getElementById("saldoRestante").value = "Pagado.-";
+  } else {
+    document.getElementById("saldoRestante").value = saldo;
+  }
+
+
+  // Si el saldo es menor o igual a cero, mostramos "Pagado.-"
+  if (saldo <= 0) {
+    document.getElementById("saldoRestante").value = "Pagado.-";
+  } else {
+    document.getElementById("saldoRestante").value = saldo;
+  }
+}
+
+
+  // Mostrar mensaje
+  document.getElementById("mensajeOk").style.display = "block";
+
+  // Insertar fila en tabla
+  const tabla = document.getElementById("tablaPagos").querySelector("tbody");
+  const fila = tabla.insertRow();
+
+  fila.innerHTML = `
+    <td>${r.cliente}</td>
+    <td>Cancha ${r.cancha}</td>
+    <td>$${r.precio}</td>
+    <td>$${r.sena}</td>
+    <td>${r.estadoPago}</td>
+    <td>$${monto}</td>
+    <td>${forma}</td>
+    <td>$${saldo}</td>
+  `;
+
+  if (saldo <= 0) {
+    document.getElementById("saldoRestante").value = "Pagado.-";
+  } else {
+    document.getElementById("saldoRestante").value = saldo;
+  }
+
+  console.log("Cobro registrado:", {reserva: reserva.textContent, precio, sena, tipo, monto, forma, saldo});
