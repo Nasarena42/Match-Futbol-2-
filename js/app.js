@@ -73,26 +73,16 @@ function hoy() {
 
 
 
-
-
-
-
-
-
-
-
-
-
+let pagos = JSON.parse(localStorage.getItem("pagos")) || [];
 
 function cargarReservasEnPagos() {
   const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
   const select = document.getElementById("reservaSelect");
   select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
-
   reservas.forEach((r, i) => {
     const opcion = document.createElement("option");
-    opcion.value = i; // índice de la reserva
-    opcion.textContent = r.cliente + " - Cancha " + r.cancha + " - " + r.fecha + " " + r.hora;
+    opcion.value = i;
+    opcion.textContent = `${r.cliente} - Cancha ${r.cancha} - ${r.fecha} ${r.hora}`;
     select.appendChild(opcion);
   });
 }
@@ -101,18 +91,20 @@ function cargarDatosReserva() {
   const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
   const indice = document.getElementById("reservaSelect").value;
   if (indice === "") return;
-
   const r = reservas[indice];
-  document.getElementById("precioTotal").value   = r.precio;
-  document.getElementById("senaYaPagada").value  = r.sena;
+  document.getElementById("precioTotal").value = r.precio;
+  document.getElementById("senaYaPagada").value = r.sena;
   document.getElementById("saldoRestante").value = (r.precio - r.sena).toFixed(2);
-  document.getElementById("montoCobrar").value   = ""; // se completa al elegir tipo de pago
+  document.getElementById("montoCobrar").value = "";
+  document.getElementById("tipoPago").value = "";
+  document.getElementById("formaPago").value = "";
 }
 
 function seleccionarTipoPago() {
-  const tipo   = document.getElementById("tipoPago").value;
+  const tipo = document.getElementById("tipoPago").value;
   const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
-  const sena   = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+  const sena = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+  const saldo = parseFloat(document.getElementById("saldoRestante").value) || 0;
 
   if (tipo === "sena") {
     document.getElementById("montoCobrar").value = sena;
@@ -120,113 +112,154 @@ function seleccionarTipoPago() {
   } else if (tipo === "total") {
     document.getElementById("montoCobrar").value = precio;
     document.getElementById("saldoRestante").value = 0;
+  } else if (tipo === "parcial") {
+    document.getElementById("montoCobrar").value = saldo > 0 ? saldo.toFixed(2) : 0;
   } else {
     document.getElementById("montoCobrar").value = "";
   }
 }
 
-let pagos = []; // historial de pagos
+function calcularSaldoRestante() {
+  const precioTotal  = parseFloat(document.getElementById("precioTotal").value) || 0;
+  const senaPagada   = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+  const monto        = parseFloat(document.getElementById("montoCobrar").value) || 0;
+
+  let saldo = precioTotal - senaPagada - monto;
+  document.getElementById("saldoRestante").value = saldo <= 0 ? "Pagado" : saldo.toFixed(2);
+}
 
 function registrarCobro() {
-  const reserva = document.getElementById("reservaSelect").value;
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const indice = document.getElementById("reservaSelect").value;
+  const forma = document.getElementById("formaPago").value;
+  const tipo = document.getElementById("tipoPago").value;
   const monto = parseFloat(document.getElementById("montoCobrar").value) || 0;
-  const precioTotal = parseFloat(document.getElementById("precioTotal").value) || 0;
 
-  if (!reserva || !monto) {
-    alert("Completa todos los campos obligatorios.");
+  if (indice === "" || forma === "" || tipo === "" || monto <= 0) {
+    alert("Completa todos los campos obligatorios y que el monto sea mayor a 0.");
     return;
   }
 
-  // Guardamos el pago
-  pagos.push({reserva, monto});
-
-  // Calculamos el total abonado para esa reserva
-  const totalAbonado = pagos
-    .filter(p => p.reserva === reserva)
-    .reduce((sum, p) => sum + p.monto, 0);
-
-  // Calculamos saldo
-  let saldo = precioTotal - totalAbonado;
-
-  // Mostramos automáticamente el resultado
-  if (saldo <= 0) {
-    document.getElementById("saldoRestante").value = "Pagado.-";
-  } else {
-    document.getElementById("saldoRestante").value = saldo;
-  }
-
-
-  if (!reserva || !tipo || !monto || !forma) {
-    alert("Completa todos los campos obligatorios.");
+  const r = reservas[indice];
+  if (!r) {
+    alert("La reserva seleccionada no es válida.");
     return;
   }
 
-  // Guardamos el pago en el historial
-  pagos.push({reserva, tipo, monto, forma});
-
-  // Calculamos el total abonado hasta ahora
-  const totalAbonado = pagos
-    .filter(p => p.reserva === reserva)
-    .reduce((sum, p) => sum + p.monto, 0);
-
-  let saldo = precioTotal - totalAbonado;
-
-  // Mostramos saldo o "Pagado.-"
-  if (saldo <= 0) {
-    document.getElementById("saldoRestante").value = "Pagado.-";
+  let pagoExistente = pagos.find(p => p.reservaId == indice && p.tipo === tipo);
+  if (pagoExistente) {
+    pagoExistente.monto += monto;
+    pagoExistente.forma = forma;
   } else {
-    document.getElementById("saldoRestante").value = saldo;
+    pagoExistente = { reservaId: indice, tipo, forma, monto };
+    pagos.push(pagoExistente);
   }
 
-  console.log("Cobro registrado:", {reserva, tipo, monto, forma, saldo});
-}
-// funcion calcular saldo restante
+  localStorage.setItem("pagos", JSON.stringify(pagos));
 
-function calcularSaldoRestante() {
-  const precioTotal = parseFloat(document.getElementById("precioTotal").value) || 0;
-  const senaYaPagada = parseFloat(document.getElementById("senaYaPagada").value) || 0;
-  const montoCobrar = parseFloat(document.getElementById("montoCobrar").value) || 0;
+  mostrarComprobante(pagoExistente, r);
 
-  let saldo = precioTotal - senaYaPagada - montoCobrar;
+  const mensaje = document.getElementById("mensajeOk");
+  mensaje.style.display = "block";
+  setTimeout(() => { mensaje.style.display = "none"; }, 3000);
 
-  if (saldo <= 0) {
-    document.getElementById("saldoRestante").value = "Pagado.-";
-  } else {
-    document.getElementById("saldoRestante").value = saldo;
-  }
-
-
-  // Si el saldo es menor o igual a cero, mostramos "Pagado.-"
-  if (saldo <= 0) {
-    document.getElementById("saldoRestante").value = "Pagado.-";
-  } else {
-    document.getElementById("saldoRestante").value = saldo;
-  }
+  actualizarTablaPagos();
+  mostrarComprobante(pagoExistente, r);
+  limpiarFormulario();
 }
 
 
-  // Mostrar mensaje
-  document.getElementById("mensajeOk").style.display = "block";
-
-  // Insertar fila en tabla
+function actualizarTablaPagos() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
   const tabla = document.getElementById("tablaPagos").querySelector("tbody");
-  const fila = tabla.insertRow();
+  tabla.innerHTML = "";
 
-  fila.innerHTML = `
-    <td>${r.cliente}</td>
-    <td>Cancha ${r.cancha}</td>
-    <td>$${r.precio}</td>
-    <td>$${r.sena}</td>
-    <td>${r.estadoPago}</td>
-    <td>$${monto}</td>
-    <td>${forma}</td>
-    <td>$${saldo}</td>
-  `;
+  const pagosPorClave = {};
+  pagos.forEach(p => {
+    const clave = p.reservaId + "-" + p.tipo + "-" + p.forma;
+    if (!pagosPorClave[clave]) {
+      pagosPorClave[clave] = { ...p };
+    } else {
+      pagosPorClave[clave].monto += p.monto;
+    }
+  });
 
-  if (saldo <= 0) {
-    document.getElementById("saldoRestante").value = "Pagado.-";
-  } else {
-    document.getElementById("saldoRestante").value = saldo;
+  Object.values(pagosPorClave).forEach(p => {
+    const reservaIndex = Number(p.reservaId);
+    const r = reservas[reservaIndex];
+
+    if (!r) {
+      console.warn(`No se encontró reserva para id ${p.reservaId}`);
+      return;
+    }
+
+    const totalPagado = pagos
+      .filter(px => Number(px.reservaId) === reservaIndex)
+      .reduce((sum, px) => sum + px.monto, 0);
+    const saldo = r.precio - totalPagado;
+
+    const fila = tabla.insertRow();
+    fila.innerHTML = `
+      <td>${r.cliente}</td>
+      <td>Cancha ${r.cancha}</td>
+      <td>$${r.precio.toFixed(2)}</td>
+      <td>$${r.sena.toFixed(2)}</td>
+      <td>${p.tipo === "sena" ? "Seña" : (p.tipo === "parcial" ? "Pago Parcial" : "Total")}</td>
+      <td>$${p.monto.toFixed(2)}</td>
+      <td>${p.forma}</td>
+      <td>${saldo <= 0 ? "Pagado" : "$" + saldo.toFixed(2)}</td>
+    `;
+  });
+}
+
+function limpiarFormulario() {
+  document.getElementById("formPago").reset();
+  document.getElementById("saldoRestante").value = "";
+  document.getElementById("precioTotal").value = "";
+  document.getElementById("senaYaPagada").value = "";
+}
+
+function borrarListadoPagos() {
+  if (confirm("¿Estás seguro que quieres borrar todos los pagos? Esta acción no se puede deshacer.")) {
+    pagos = [];
+    localStorage.removeItem("pagos");
+    actualizarTablaPagos();
   }
+}
 
-  console.log("Cobro registrado:", {reserva: reserva.textContent, precio, sena, tipo, monto, forma, saldo});
+// Comprobante de pago
+function mostrarComprobante(pago, reserva) {
+  const detalles = `
+    <p><strong>Cliente:</strong> ${reserva.cliente}</p>
+    <p><strong>Cancha:</strong> ${reserva.cancha}</p>
+    <p><strong>Fecha:</strong> ${reserva.fecha} ${reserva.hora}</p>
+    <p><strong>Tipo de pago:</strong> ${pago.tipo === "sena" ? "Seña" : (pago.tipo === "parcial" ? "Pago Parcial" : "Total")}</p>
+    <p><strong>Monto cobrado:</strong> $${pago.monto.toFixed(2)}</p>
+    <p><strong>Forma de pago:</strong> ${pago.forma}</p>
+  `;
+  document.getElementById("detallesPago").innerHTML = detalles;
+
+  document.getElementById("comprobantePago").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function cerrarComprobante() {
+  document.getElementById("comprobantePago").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
+
+function imprimirComprobante() {
+  const contenido = document.getElementById("comprobantePago").innerHTML;
+  const ventana = window.open('', '', 'width=400,height=600');
+  ventana.document.write('<html><head><title>Comprobante de Pago</title></head><body>');
+  ventana.document.write(contenido);
+  ventana.document.write('</body></html>');
+  ventana.document.close();
+  ventana.print();
+}
+
+window.onload = function() {
+  cargarReservasEnPagos();
+  actualizarTablaPagos();
+  document.getElementById("btnBorrarPagos").onclick = borrarListadoPagos;
+};
