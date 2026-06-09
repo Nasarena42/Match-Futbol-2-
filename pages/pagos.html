@@ -1,40 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Pagos - Match Futbol</title>
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css"/>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/styles.css" />
+
+  <style>
+    /* Estilos para tabla negra */
+    #tablaPagos {
+      background-color: #000000;
+      color: #ffffff;
+      border-collapse: collapse;
+    }
+    #tablaPagos thead {
+      background-color: #222222;
+      color: #ffffff;
+    }
+    #tablaPagos tfoot {
+      background-color: #111111;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    #tablaPagos th,
+    #tablaPagos td {
+      border: 1px solid #444444;
+      padding: 8px;
+    }
+  </style>
 </head>
 <body>
+  <!-- El resto del código HTML igual que antes -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <span class="logo-icon">⚽</span>
-      <div><div class="logo-title">MATCH</div><div class="logo-sub">FÚTBOL</div></div>
+      <div>
+        <div class="logo-title">MATCH</div>
+        <div class="logo-sub">FÚTBOL</div>
+      </div>
     </div>
+
     <nav class="sidebar-nav">
-      <a href="../index.html" class="nav-item"><span class="nav-icon">🏠</span><span>Inicio</span></a>
-      <a href="clientes.html"  class="nav-item"><span class="nav-icon">👥</span><span>Clientes</span></a>
-      <a href="reservas.html"  class="nav-item"><span class="nav-icon">📅</span><span>Reservas</span></a>
-      <a href="pagos.html"     class="nav-item active"><span class="nav-icon">💰</span><span>Pagos</span></a>
-      <a href="eventos.html"   class="nav-item"><span class="nav-icon">🎉</span><span>Eventos</span></a>
+      <a href="../index.html" class="nav-item"
+        ><span class="nav-icon">🏠</span><span>Inicio</span></a
+      >
+      <a href="clientes.html" class="nav-item"
+        ><span class="nav-icon">👥</span><span>Clientes</span></a
+      >
+      <a href="reservas.html" class="nav-item"
+        ><span class="nav-icon">📅</span><span>Reservas</span></a
+      >
+      <a href="pagos.html" class="nav-item active"
+        ><span class="nav-icon">💰</span><span>Pagos</span></a
+      >
+      <a href="eventos.html" class="nav-item"
+        ><span class="nav-icon">🎉</span><span>Eventos</span></a
+      >
     </nav>
+
     <div class="sidebar-footer">Instituto Cervantes</div>
   </aside>
+
   <main class="main-content">
     <header class="top-bar">
       <h1 class="page-title">Pagos</h1>
       <div class="top-date" id="topDate"></div>
     </header>
-    <div class="mensaje-ok" id="mensajeOk" style="display:none">✅ Cobro registrado con éxito.</div>
-    <h2>REGISTRAR COBRO</h2><br>
+    <div class="mensaje-ok" id="mensajeOk" style="display:none">
+      ✅ Cobro registrado con éxito.
+    </div>
+
+    <h2>REGISTRAR COBRO</h2>
+    <br />
     <form id="formPago">
       <label>Reserva *</label>
       <select id="reservaSelect" onchange="cargarDatosReserva()">
         <option value="">-- Seleccioná una reserva --</option>
       </select>
+
       <label>Tipo de pago *</label>
       <select id="tipoPago" onchange="seleccionarTipoPago()">
         <option value="">-- Seleccioná tipo de pago --</option>
@@ -42,6 +90,7 @@
         <option value="sena">Seña</option>
         <option value="total">Total</option>
       </select>
+
       <label>Forma de pago *</label>
       <select id="formaPago">
         <option value="">-- Seleccioná forma de pago --</option>
@@ -49,18 +98,32 @@
         <option value="Transferencia">Transferencia</option>
         <option value="Tarjeta">Tarjeta</option>
       </select>
+
       <label>Saldo restante ($)</label>
-      <input type="text" id="saldoRestante" readonly>
+      <input type="text" id="saldoRestante" readonly />
+
       <label>Monto a cobrar ($) *</label>
-      <input type="number" id="montoCobrar" placeholder="Ej: 35000" min="0" oninput="calcularSaldoRestante()">
-      <!-- Campos ocultos para cálculos -->
-      <input type="hidden" id="precioTotal">
-      <input type="hidden" id="senaYaPagada">
+      <input
+        type="number"
+        id="montoCobrar"
+        placeholder="Ej: 35000"
+        min="0"
+        oninput="calcularSaldoRestante()"
+      />
+
+      <input type="hidden" id="precioTotal" />
+      <input type="hidden" id="senaYaPagada" />
+
       <button type="button" onclick="registrarCobro()">Registrar cobro</button>
     </form>
+
     <h2>LISTADO DE PAGOS</h2>
-    <table id="tablaPagos" border="1" style="width:100%; margin-top:20px; border-collapse:collapse">
-      <thead style="background:#eee">
+    <table
+      id="tablaPagos"
+      border="1"
+      style="width: 100%; margin-top: 20px; border-collapse: collapse"
+    >
+      <thead>
         <tr>
           <th>Cliente</th>
           <th>Cancha</th>
@@ -73,146 +136,227 @@
         </tr>
       </thead>
       <tbody></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">Total Abonado</td>
+          <td id="totalAbonado" colspan="3"></td>
+        </tr>
+        <tr>
+          <td colspan="5">Efectivo</td>
+          <td id="totalEfectivo" colspan="3"></td>
+        </tr>
+        <tr>
+          <td colspan="5">Transferencia</td>
+          <td id="totalTransferencia" colspan="3"></td>
+        </tr>
+        <tr>
+          <td colspan="5">Tarjeta</td>
+          <td id="totalTarjeta" colspan="3"></td>
+        </tr>
+      </tfoot>
     </table>
-    <!-- Botón para borrar pagos -->
-    <button id="btnBorrarPagos" style="margin-top: 10px;">Borrar listado de pagos</button>
+
+    <button id="btnBorrarPagos" style="margin-top: 10px">
+      Borrar listado de pagos
+    </button>
   </main>
-<script>
-let pagos = JSON.parse(localStorage.getItem("pagos")) || [];
-function cargarReservasEnPagos() {
-  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-  const select = document.getElementById("reservaSelect");
-  select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
-  reservas.forEach((r, i) => {
-    const opcion = document.createElement("option");
-    opcion.value = i;
-    opcion.textContent = `${r.cliente} - Cancha ${r.cancha} - ${r.fecha} ${r.hora}`;
-    select.appendChild(opcion);
-  });
-}
-function cargarDatosReserva() {
-  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-  const indice = document.getElementById("reservaSelect").value;
-  if (indice === "") return;
-  const r = reservas[indice];
-  document.getElementById("precioTotal").value = r.precio;
-  document.getElementById("senaYaPagada").value = r.sena;
-  document.getElementById("saldoRestante").value = (r.precio - r.sena).toFixed(2);
-  document.getElementById("montoCobrar").value = "";
-  document.getElementById("tipoPago").value = "";
-  document.getElementById("formaPago").value = "";
-}
-function seleccionarTipoPago() {
-  const tipo = document.getElementById("tipoPago").value;
-  const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
-  const sena = parseFloat(document.getElementById("senaYaPagada").value) || 0;
-  const saldo = parseFloat(document.getElementById("saldoRestante").value) || 0;
-  if (tipo === "sena") {
-    document.getElementById("montoCobrar").value = sena;
-    document.getElementById("saldoRestante").value = (precio - sena).toFixed(2);
-  } else if (tipo === "total") {
-    document.getElementById("montoCobrar").value = precio;
-    document.getElementById("saldoRestante").value = 0;
-  } else if (tipo === "parcial") {
-    document.getElementById("montoCobrar").value = saldo > 0 ? saldo.toFixed(2) : 0;
-  } else {
-    document.getElementById("montoCobrar").value = "";
-  }
-}
-function calcularSaldoRestante() {
-  const precioTotal  = parseFloat(document.getElementById("precioTotal").value) || 0;
-  const senaPagada   = parseFloat(document.getElementById("senaYaPagada").value) || 0;
-  const monto        = parseFloat(document.getElementById("montoCobrar").value) || 0;
-  let saldo = precioTotal - senaPagada - monto;
-  document.getElementById("saldoRestante").value = saldo <= 0 ? "Pagado" : saldo.toFixed(2);
-}
-function registrarCobro() {
-  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-  const indice = document.getElementById("reservaSelect").value;
-  const forma = document.getElementById("formaPago").value;
-  const tipo = document.getElementById("tipoPago").value;
-  const monto = parseFloat(document.getElementById("montoCobrar").value) || 0;
-  if (indice === "" || forma === "" || tipo === "" || monto <= 0) {
-    alert("Completa todos los campos obligatorios y que el monto sea mayor a 0.");
-    return;
-  }
-  const r = reservas[indice];
-  if (!r) {
-    alert("La reserva seleccionada no es válida.");
-    return;
-  }
-  let pagoExistente = pagos.find(p => p.reservaId == indice && p.tipo === tipo);
-  if (pagoExistente) {
-    pagoExistente.monto += monto;
-    pagoExistente.forma = forma;
-  } else {
-    pagos.push({ reservaId: indice, tipo, forma, monto });
-  }
-  localStorage.setItem("pagos", JSON.stringify(pagos));
-  const mensaje = document.getElementById("mensajeOk");
-  mensaje.style.display = "block";
-  setTimeout(() => { mensaje.style.display = "none"; }, 3000);
-  actualizarTablaPagos();
-  limpiarFormulario();
-}
-function actualizarTablaPagos() {
-  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
-  const tabla = document.getElementById("tablaPagos").querySelector("tbody");
-  tabla.innerHTML = "";
-  const pagosPorClave = {};
-  pagos.forEach(p => {
-    const clave = p.reservaId + "-" + p.tipo + "-" + p.forma;
-    if (!pagosPorClave[clave]) {
-      pagosPorClave[clave] = { ...p };
-    } else {
-      pagosPorClave[clave].monto += p.monto;
+
+  <script>
+    /* Aquí va todo el código JavaScript, como antes, sin cambios */
+
+    let pagos = JSON.parse(localStorage.getItem("pagos")) || [];
+
+    function cargarReservasEnPagos() {
+      const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      const select = document.getElementById("reservaSelect");
+      select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
+      reservas.forEach((r, i) => {
+        const opcion = document.createElement("option");
+        opcion.value = i;
+        opcion.textContent = `${r.cliente} - Cancha ${r.cancha} - ${r.fecha} ${r.hora}`;
+        select.appendChild(opcion);
+      });
     }
-  });
-  Object.values(pagosPorClave).forEach(p => {
-    const reservaIndex = Number(p.reservaId);
-    const r = reservas[reservaIndex];
-    if (!r) {
-      console.warn(`No se encontró reserva para id ${p.reservaId}`);
-      return;
+
+    function cargarDatosReserva() {
+      const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      const indice = document.getElementById("reservaSelect").value;
+      if (indice === "") return;
+      const r = reservas[indice];
+      document.getElementById("precioTotal").value = r.precio;
+      document.getElementById("senaYaPagada").value = r.sena;
+      document.getElementById("saldoRestante").value = (r.precio - r.sena).toFixed(2);
+      document.getElementById("montoCobrar").value = "";
+      document.getElementById("tipoPago").value = "";
+      document.getElementById("formaPago").value = "";
     }
-    const totalPagado = pagos
-      .filter(px => Number(px.reservaId) === reservaIndex)
-      .reduce((sum, px) => sum + px.monto, 0);
-    const saldo = r.precio - totalPagado;
-    const fila = tabla.insertRow();
-    fila.innerHTML = `
-      <td>${r.cliente}</td>
-      <td>Cancha ${r.cancha}</td>
-      <td>$${r.precio.toFixed(2)}</td>
-      <td>$${r.sena.toFixed(2)}</td>
-      <td>${p.tipo === "sena" ? "Seña" : (p.tipo === "parcial" ? "Pago Parcial" : "Total")}</td>
-      <td>$${p.monto.toFixed(2)}</td>
-      <td>${p.forma}</td>
-      <td>${saldo <= 0 ? "Pagado" : "$" + saldo.toFixed(2)}</td>
-    `;
-  });
-}
-function limpiarFormulario() {
-  document.getElementById("formPago").reset();
-  document.getElementById("saldoRestante").value = "";
-  document.getElementById("precioTotal").value = "";
-  document.getElementById("senaYaPagada").value = "";
-}
-function borrarListadoPagos() {
-  if (confirm("¿Estás seguro que quieres borrar todos los pagos? Esta acción no se puede deshacer.")) {
-    pagos = [];
-    localStorage.removeItem("pagos");
-    actualizarTablaPagos();
-  }
-}
-window.onload = function() {
-  cargarReservasEnPagos();
-  actualizarTablaPagos();
-  document.getElementById("btnBorrarPagos").onclick = borrarListadoPagos;
-};
 
-</script>
+    function seleccionarTipoPago() {
+      const tipo = document.getElementById("tipoPago").value;
+      const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
+      const sena = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+      const saldo = parseFloat(document.getElementById("saldoRestante").value) || 0;
 
+      if (tipo === "sena") {
+        document.getElementById("montoCobrar").value = sena;
+        document.getElementById("saldoRestante").value = (precio - sena).toFixed(2);
+      } else if (tipo === "total") {
+        document.getElementById("montoCobrar").value = precio;
+        document.getElementById("saldoRestante").value = 0;
+      } else if (tipo === "parcial") {
+        document.getElementById("montoCobrar").value = saldo > 0 ? saldo.toFixed(2) : 0;
+      } else {
+        document.getElementById("montoCobrar").value = "";
+      }
+    }
 
+    function calcularSaldoRestante() {
+      const precioTotal = parseFloat(document.getElementById("precioTotal").value) || 0;
+      const senaPagada = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+      const monto = parseFloat(document.getElementById("montoCobrar").value) || 0;
+      let saldo = precioTotal - senaPagada - monto;
+      document.getElementById("saldoRestante").value =
+        saldo <= 0 ? "Pagado" : saldo.toFixed(2);
+    }
+
+    function registrarCobro() {
+      const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      const indice = document.getElementById("reservaSelect").value;
+      const forma = document.getElementById("formaPago").value;
+      const tipo = document.getElementById("tipoPago").value;
+      const monto = parseFloat(document.getElementById("montoCobrar").value) || 0;
+
+      if (indice === "" || forma === "" || tipo === "" || monto <= 0) {
+        alert("Completa todos los campos obligatorios y que el monto sea mayor a 0.");
+        return;
+      }
+
+      const r = reservas[indice];
+      if (!r) {
+        alert("La reserva seleccionada no es válida.");
+        return;
+      }
+
+      let pagoExistente = pagos.find((p) => p.reservaId == indice && p.tipo === tipo);
+      if (pagoExistente) {
+        pagoExistente.monto += monto;
+        pagoExistente.forma = forma;
+      } else {
+        pagoExistente = { reservaId: indice, tipo, forma, monto };
+        pagos.push(pagoExistente);
+      }
+
+      localStorage.setItem("pagos", JSON.stringify(pagos));
+
+      const mensaje = document.getElementById("mensajeOk");
+      mensaje.style.display = "block";
+      setTimeout(() => {
+        mensaje.style.display = "none";
+      }, 3000);
+
+      actualizarTablaPagos();
+      limpiarFormulario();
+    }
+
+    function actualizarTablaPagos() {
+      const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+      const tabla = document.getElementById("tablaPagos").querySelector("tbody");
+      tabla.innerHTML = "";
+
+      const pagosPorClave = {};
+      pagos.forEach((p) => {
+        const clave = p.reservaId + "-" + p.tipo + "-" + p.forma;
+        if (!pagosPorClave[clave]) {
+          pagosPorClave[clave] = { ...p };
+        } else {
+          pagosPorClave[clave].monto += p.monto;
+        }
+      });
+
+      Object.values(pagosPorClave).forEach((p) => {
+        const reservaIndex = Number(p.reservaId);
+        const r = reservas[reservaIndex];
+
+        if (!r) {
+          console.warn(`No se encontró reserva para id ${p.reservaId}`);
+          return;
+        }
+
+        const totalPagado = pagos
+          .filter((px) => Number(px.reservaId) === reservaIndex)
+          .reduce((sum, px) => sum + px.monto, 0);
+        const saldo = r.precio - totalPagado;
+
+        const fila = tabla.insertRow();
+        fila.innerHTML = `
+          <td>${r.cliente}</td>
+          <td>Cancha ${r.cancha}</td>
+          <td>$${r.precio.toFixed(2)}</td>
+          <td>$${r.sena.toFixed(2)}</td>
+          <td>${
+            p.tipo === "sena"
+              ? "Seña"
+              : p.tipo === "parcial"
+              ? "Pago Parcial"
+              : "Total"
+          }</td>
+          <td>$${p.monto.toFixed(2)}</td>
+          <td>${p.forma}</td>
+          <td>${saldo <= 0 ? "Pagado" : "$" + saldo.toFixed(2)}</td>
+        `;
+      });
+
+      // Calcular totales
+      const totalAbonado = pagos.reduce((sum, p) => sum + p.monto, 0);
+      const totalEfectivo = pagos
+        .filter((p) => p.forma === "Efectivo")
+        .reduce((sum, p) => sum + p.monto, 0);
+      const totalTransferencia = pagos
+        .filter((p) => p.forma === "Transferencia")
+        .reduce((sum, p) => sum + p.monto, 0);
+      const totalTarjeta = pagos
+        .filter((p) => p.forma === "Tarjeta")
+        .reduce((sum, p) => sum + p.monto, 0);
+
+      // Actualizar totales en pie de tabla
+      document.getElementById("totalAbonado").textContent = `$${totalAbonado.toFixed(
+        2
+      )}`;
+      document.getElementById(
+        "totalEfectivo"
+      ).textContent = `$${totalEfectivo.toFixed(2)}`;
+      document.getElementById(
+        "totalTransferencia"
+      ).textContent = `$${totalTransferencia.toFixed(2)}`;
+      document.getElementById("totalTarjeta").textContent = `$${totalTarjeta.toFixed(
+        2
+      )}`;
+    }
+
+    function limpiarFormulario() {
+      document.getElementById("formPago").reset();
+      document.getElementById("saldoRestante").value = "";
+      document.getElementById("precioTotal").value = "";
+      document.getElementById("senaYaPagada").value = "";
+    }
+
+    function borrarListadoPagos() {
+      if (
+        confirm(
+          "¿Estás seguro que quieres borrar todos los pagos? Esta acción no se puede deshacer."
+        )
+      ) {
+        pagos = [];
+        localStorage.removeItem("pagos");
+        actualizarTablaPagos();
+      }
+    }
+
+    window.onload = function () {
+      cargarReservasEnPagos();
+      actualizarTablaPagos();
+      document.getElementById("btnBorrarPagos").onclick = borrarListadoPagos;
+    };
+  </script>
 </body>
 </html>
