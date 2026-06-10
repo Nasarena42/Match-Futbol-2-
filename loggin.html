@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Match Fútbol - Login</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="login-body">
 
@@ -39,10 +39,6 @@
   </div>
 
   <script>
-    if (localStorage.getItem("logueado")) {
-      window.location.href = "index.html";
-    }
-
     function iniciarSesion() {
       var usuario = document.getElementById("usuario").value;
       var password = document.getElementById("password").value;

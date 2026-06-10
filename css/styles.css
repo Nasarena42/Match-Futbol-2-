@@ -154,173 +154,6 @@ body {
 }
 
 /* =====================================================
-   TARJETAS DEL DASHBOARD
-   ===================================================== */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.dash-card {
-  background: var(--gris-oscuro);
-  border: 1px solid var(--gris-borde);
-  border-radius: var(--radius);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.dash-card:hover { transform: translateY(-3px); }
-
-.dash-card.green  { border-top: 3px solid var(--verde-neon); }
-.dash-card.blue   { border-top: 3px solid #5ba3f5; }
-.dash-card.orange { border-top: 3px solid #f59e42; }
-.dash-card.red    { border-top: 3px solid #f55b5b; }
-
-.dash-card-icon  { font-size: 2rem; }
-.dash-card-num   { font-family: var(--font-titulo); font-size: 2rem; line-height: 1; }
-.dash-card-label { font-size: 0.75rem; color: var(--texto-suave); margin-top: 4px; }
-
-/* =====================================================
-   SECCIÓN GENÉRICA
-   ===================================================== */
-.section-box {
-  background: var(--gris-oscuro);
-  border: 1px solid var(--gris-borde);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 24px;
-}
-
-.section-title {
-  font-family: var(--font-titulo);
-  font-size: 1.3rem;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
-  color: var(--blanco);
-}
-
-.empty-msg {
-  color: var(--texto-suave);
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 24px 0;
-}
-
-/* =====================================================
-   FORMULARIOS
-   ===================================================== */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group.full { grid-column: 1 / -1; }
-
-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--texto-suave);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-input, select, textarea {
-  background: var(--gris-medio);
-  border: 1px solid var(--gris-borde);
-  border-radius: 8px;
-  color: var(--blanco);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  padding: 10px 14px;
-  transition: border-color 0.2s;
-  outline: none;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--verde-neon);
-}
-
-select option { background: var(--gris-medio); }
-
-/* =====================================================
-   BOTONES
-   ===================================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-primary       { background: var(--verde-claro); color: #fff; }
-.btn-primary:hover { background: var(--verde); }
-
-.btn-danger        { background: transparent; border: 1px solid #f55b5b; color: #f55b5b; }
-.btn-danger:hover  { background: rgba(245, 91, 91, 0.1); }
-
-.btn-outline       { background: transparent; border: 1px solid var(--gris-borde); color: var(--blanco); }
-.btn-outline:hover { border-color: var(--verde-neon); color: var(--verde-neon); }
-
-/* =====================================================
-   TABLA
-   ===================================================== */
-.tabla {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-
-.tabla th {
-  text-align: left;
-  padding: 10px 14px;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--texto-suave);
-  border-bottom: 1px solid var(--gris-borde);
-}
-
-.tabla td {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  vertical-align: middle;
-}
-
-.tabla tr:hover td { background: rgba(255,255,255,0.03); }
-
-/* =====================================================
-   BUSCADOR
-   ===================================================== */
-.search-bar {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  align-items: center;
-}
-
-.search-bar input { flex: 1; }
-
-/* =====================================================
    BADGES
    ===================================================== */
 .badge {
@@ -471,3 +304,261 @@ select option { background: var(--gris-medio); }
 
 .tab-panel        { display: none; }
 .tab-panel.active { display: block; }
+/* =====================================================
+   DASHBOARD
+   ===================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.dash-card {
+  background: var(--gris-medio);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.dash-card:hover { transform: translateY(-3px); }
+
+.dash-card.green  { border-top: 3px solid var(--verde-neon); }
+.dash-card.blue   { border-top: 3px solid #5ba3f5; }
+.dash-card.orange { border-top: 3px solid #f59e42; }
+.dash-card.red    { border-top: 3px solid #f55b5b; }
+
+.dash-card-icon  { font-size: 2rem; }
+.dash-card-num   { font-family: var(--font-titulo); font-size: 2rem; line-height: 1; }
+.dash-card-label { font-size: 0.75rem; color: var(--texto-suave); margin-top: 4px; }
+
+/* =====================================================
+   SECCIÓN GENÉRICA
+   ===================================================== */
+.section-box {
+  background: var(--gris-oscuro);
+  border: 1px solid var(--gris-borde);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* =====================================================
+   FORMULARIOS
+   ===================================================== */
+form {
+  background: var(--gris-medio);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin-bottom: 50px;
+}
+
+form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid var(--gris-borde);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+}
+
+form button {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background-color: var(--verde);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+form button:hover { background-color: var(--verde-claro); }
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--blanco);
+}
+
+th {
+  background-color: var(--verde);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gris-borde);
+}
+
+tr:hover td { background-color: var(--gris-medio); }
+
+.btn-editar {
+  background-color: var(--azul);
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.btn-eliminar {
+  background-color: var(--rojo);
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-filtro {
+  background-color: #3d78f8;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.buscador { margin-bottom: 16px; }
+
+.buscador input {
+  padding: 8px 12px;
+  border: 1px solid var(--gris-borde);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  width: 300px;
+  background: var(--gris-medio);
+  color: var(--blanco);
+}
+
+.mensaje-ok {
+  background-color: rgba(77,220,110,0.1);
+  color: var(--verde-neon);
+  padding: 10px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+/* Login */
+.login-body {
+  margin: 0;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  background: #141414;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.logo-ball {
+  width: 44px;
+  height: 44px;
+  background: #1a7a2e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.logo-top { font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 2px; }
+.logo-bot { font-size: 11px; color: #1a7a2e; letter-spacing: 3px; }
+.login-title { font-size: 15px; color: #888; margin-bottom: 1.5rem; }
+
+.field-group { margin-bottom: 1rem; }
+.field-label { font-size: 12px; color: #666; margin-bottom: 6px; display: block; }
+
+.field-input-wrap input {
+  width: 100%;
+  padding: 11px 12px;
+  background: #1e1e1e;
+  border: 0.5px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.error-msg {
+  background: #2a0f0f;
+  border: 0.5px solid #5c1f1f;
+  color: #f09595;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #1a7a2e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-login:hover { background: #155c23; }
+
+/* ===== TÍTULOS DE SECCIÓN ===== */
+h2 {
+  font-family: var(--font-titulo);
+  font-size: 1.3rem;
+  color: var(--blanco);
+  letter-spacing: 1px;
+  margin: 24px 0 12px;
+}
+
+/* ===== LAYOUT 2 COLUMNAS (eventos) ===== */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ===== BADGE GRIS ===== */
+.badge-gray { background: rgba(136,136,136,0.15); color: var(--texto-suave); }
