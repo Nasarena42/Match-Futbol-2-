@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cobros - Match Futbol</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <aside class="sidebar">
+   <div class="sidebar-logo">
+    <span class="logo-icon">⚽</span>
+      <div><div class="logo-title">MATCH</div><div class="logo-sub">FÚTBOL</div></div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="../index.html" class="nav-item">
+          <i class="fa-solid fa-house"></i><span><br>Inicio</span>
+        </a>
+        <a href="clientes.html" class="nav-item">
+          <i class="fa-solid fa-users"></i><span><br>Clientes</span>
+        </a>
+        <a href="reservas.html" class="nav-item">
+          <i class="fa-solid fa-calendar-days"></i><span><br>Reservas</span>
+        </a>
+        <a href="cobros.html" class="nav-item active">
+          <i class="fa-solid fa-money-bill"></i><span><br>Cobros</span>
+        </a>
+        <a href="eventos.html" class="nav-item">
+          <i class="fa-solid fa-star"></i><span><br>Eventos</span>
+        </a>
+      </nav>
+
+    <div class="sidebar-footer">Instituto Cervantes</div>
+  </aside>
+
+   
+  <main class="main-content">
+  <header class="top-bar">
+    <h1 class="page-title">Cobros</h1>
+    <div class="top-date" id="topDate"></div>
+  </header>
+  <div class="mensaje-ok" id="mensajeOk">✅ Cobro registrado con éxito.</div>
+
+  <h2>REGISTRAR COBRO</h2><br>
+  <form id="formPago">
+
+  <label>Reserva *</label>
+  <select id="reservaSelect" onchange="cargarDatosReserva()">
+    <option value="">-- Seleccioná una reserva --</option>
+  </select>
+
+  <label>Tipo de pago *</label>
+  <select id="tipoPago" onchange="seleccionarTipoPago()">
+    <option value="">-- Seleccioná tipo de pago --</option>
+    <option value="sena">Seña</option>
+    <option value="total">Total</option>
+  </select>
+
+  <label>Forma de pago *</label>
+  <select id="formaPago">
+    <option value="">-- Seleccioná forma de pago --</option>
+    <option value="Efectivo">Efectivo</option>
+    <option value="Transferencia">Transferencia</option>
+    <option value="Tarjeta">Tarjeta</option>
+  </select>
+<label>Saldo restante ($)</label>
+<input type="text" id="saldoRestante" readonly style="background:var(--gris-medio); color:var(--texto-suave);">
+
+<label>Monto a cobrar ($) *</label>
+<input type="number" id="montoCobrar" placeholder="Ej: 35000" min="0"
+       oninput="calcularSaldoRestante()">
+
+  <input type="hidden" id="precioTotal">
+  <input type="hidden" id="senaYaPagada">
+
+  <button type="button" onclick="registrarCobro()">Registrar cobro</button>
+</form>
+
+  <h2>LISTADO DE COBROS</h2>
+  <table id="tablaPagos">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Cancha</th>
+        <th>Precio Total</th>
+        <th>Seña</th>
+        <th>Tipo de Pago</th>
+        <th>Monto Cobrado</th>
+        <th>Forma de Pago</th>
+        <th>Saldo Restante</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<script>
+function cargarReservasEnPagos() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const select = document.getElementById("reservaSelect");
+  select.innerHTML = "<option value=''>-- Seleccioná una reserva --</option>";
+
+  reservas.forEach((r, i) => {
+    const opcion = document.createElement("option");
+    opcion.value = i;
+    opcion.textContent = r.cliente + " - Cancha " + r.cancha + " - " + r.fecha + " " + r.hora;
+    select.appendChild(opcion);
+  });
+}
+
+function cargarDatosReserva() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const indice = document.getElementById("reservaSelect").value;
+  if (indice === "") return;
+
+  const r = reservas[indice];
+  document.getElementById("precioTotal").value   = r.precio;
+  document.getElementById("senaYaPagada").value  = r.sena;
+  document.getElementById("saldoRestante").value = (r.precio - r.sena).toFixed(2);
+  document.getElementById("montoCobrar").value   = ""; // se completa al elegir tipo de pago
+}
+
+function seleccionarTipoPago() {
+  const tipo   = document.getElementById("tipoPago").value;
+  const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
+  const sena   = parseFloat(document.getElementById("senaYaPagada").value) || 0;
+
+  if (tipo === "sena") {
+    document.getElementById("montoCobrar").value = sena;
+    document.getElementById("saldoRestante").value = (precio - sena).toFixed(2);
+  } else if (tipo === "total") {
+    document.getElementById("montoCobrar").value = precio;
+    document.getElementById("saldoRestante").value = 0;
+  } else {
+    document.getElementById("montoCobrar").value = "";
+  }
+}
+function calcularSaldoRestante() {
+  const precio = parseFloat(document.getElementById("precioTotal").value) || 0;
+  const monto  = parseFloat(document.getElementById("montoCobrar").value) || 0;
+  const restante = Math.max(0, precio - monto);
+  document.getElementById("saldoRestante").value = restante.toFixed(2);
+}
+
+function registrarCobro() {
+  const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  const indice = document.getElementById("reservaSelect").value;
+  const forma   = document.getElementById("formaPago").value;
+  const tipo    = document.getElementById("tipoPago").value;
+
+  if (indice === "" || forma === "" || tipo === "") {
+    alert("Completa todos los campos obligatorios.");
+    return;
+  }
+
+  const r = reservas[indice];
+  const monto = document.getElementById("montoCobrar").value;
+  const saldo = document.getElementById("saldoRestante").value;
+
+  document.getElementById("mensajeOk").style.display = "block";
+
+  const tabla = document.getElementById("tablaPagos").querySelector("tbody");
+  const fila = tabla.insertRow();
+
+  fila.innerHTML = `
+    <td>${r.cliente}</td>
+    <td>Cancha ${r.cancha}</td>
+    <td>$${r.precio}</td>
+    <td>$${r.sena}</td>
+    <td>${tipo === "sena" ? "Seña" : "Total"}</td>
+    <td>$${monto}</td>
+    <td>${forma}</td>
+    <td>$${saldo}</td>
+  `;
+}
+
+// cargar reservas al abrir la página
+window.onload = cargarReservasEnPagos;
+</script>
+
+
+</body>
+</html>

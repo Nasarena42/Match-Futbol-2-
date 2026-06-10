@@ -24,8 +24,8 @@
       <a href="reservas.html" class="nav-item">
         <i class="fa-solid fa-calendar-days"></i><span><br>Reservas</span>
       </a>
-      <a href="pagos.html" class="nav-item">
-        <i class="fa-solid fa-money-bill"></i><span><br>Pagos</span>
+      <a href="cobros.html" class="nav-item">
+        <i class="fa-solid fa-money-bill"></i><span><br>Cobros</span>
       </a>
       <a href="eventos.html" class="nav-item active">
         <i class="fa-solid fa-star"></i><span><br>Eventos</span>
@@ -91,9 +91,9 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
           <h2 style="font-family: var(--font-titulo); font-size: 1.4rem; color: var(--oscuro); margin: 0; letter-spacing: 0.5px;">REPORTE DE OCUPACIÓN</h2>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="tab-btn active" id="btnDia" onclick="filtrarReporte('dia')">Hoy</button>
-            <button type="button" class="tab-btn" id="btnSemana" onclick="filtrarReporte('semana')">Esta Semana</button>
-            <button type="button" class="tab-btn" id="btnTodos" onclick="filtrarReporte('todos')">Ver Todos</button>
+            <button type="button" class="tab-btn active" id="btnDia">Hoy</button>
+            <button type="button" class="tab-btn" id="btnSemana">Esta Semana</button>
+            <button type="button" class="tab-btn" id="btnTodos">Ver Todos</button>
           </div>
         </div>
 
@@ -126,6 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
         { cliente: "FC Alonsos", fecha: "2026-06-08", horaInicio: "19:30", horaFin: "22:30", tipo: "Tercer Tiempo", invitados: 20 }
       ];
       let filtroActual = 'todos';
+
+      // Botones del reporte
+      document.getElementById('btnDia').addEventListener('click', function() { filtrarReporte('dia'); });
+      document.getElementById('btnSemana').addEventListener('click', function() { filtrarReporte('semana'); });
+      document.getElementById('btnTodos').addEventListener('click', function() { filtrarReporte('todos'); });
 
       // Fecha en la barra superior
       const fechaActual = new Date().toLocaleDateString('es-ES', {
